@@ -1,6 +1,8 @@
 const columns = document.querySelectorAll('.column');
         const newColumnInput = document.getElementById('newColumn');
 
+        //hola
+
         columns.forEach(column => {
             column.addEventListener('dragover', dragOver);
             column.addEventListener('dragenter', dragEnter);
