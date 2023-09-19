@@ -9,19 +9,6 @@
 <body>
     <h1>Tablero Kanban</h1>
     <div class="board">
-        <div class="column addColumn">
-            <div class="column-actions">
-                <select onchange="performAction(this)">
-                    <option value="none">Acciones</option>
-                    <option value="clear">Limpiar</option>
-                </select>
-            </div>
-            <h2>Agregar Tareas</h2>
-            <div>
-                <input type="text" id="newTask" placeholder="Nueva tarea">
-                <button class="add-task-button" onclick="addTask('newTask')">Agregar Tarea</button>
-            </div>
-        </div>
         <div class="column">
             <div class="column-actions">
                 <select onchange="performAction(this)">
@@ -55,8 +42,37 @@
         <div class="addColumn">
             <input type="text" id="newColumn" placeholder="Nueva columna">
             <button onclick="addColumn()">Agregar Columna</button>
+
+            <button id="openModalBtn">Abrir Modal</button>
         </div>
     </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <h2>Agregar Tarea</h2><br>
+            <div>
+                <form id="taskForm">
+                    <label for="newTask">Nueva Tarea</label>
+                    <input type="text" id="newTask" placeholder="Nueva tarea" required>
+                    <label for="taskAssignee">Encargado</label>
+                    <input type="text" id="taskAssignee" placeholder="Encargado">
+                    <button>Encargado De la Tarea</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEditModalBtn">&times;</span>
+            <h2>Editar Tarea</h2><br>
+            <div>
+                <label for="editedTask">Editar Tarea</label>
+                <input type="text" id="editedTask" placeholder="Editar tarea">
+                <button id="saveEditButton">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -40,22 +40,6 @@ function dragDrop() {
     column.insertBefore(draggedCard, column.querySelector('h2').nextSibling);
 }
 
-function addTask(inputId) {
-    const taskInput = document.getElementById(inputId);
-    const taskText = taskInput.value;
-    if (taskText.trim() === '') return;
-
-    const newTask = document.createElement('div');
-    newTask.className = 'card';
-    newTask.draggable = true;
-    newTask.textContent = taskText;
-    newTask.addEventListener('dragstart', dragStart);
-    newTask.addEventListener('dragend', dragEnd);
-
-    const column = taskInput.parentElement.parentElement;
-    column.insertBefore(newTask, column.querySelector('h2').nextSibling);
-    taskInput.value = '';
-}
 
 function performAction(select) {
     const selectedOption = select.value;
@@ -104,3 +88,89 @@ function addColumn() {
     board.insertBefore(newColumn, newColumnInput.parentElement);
     newColumnInput.value = '';
 }
+
+const modal = document.getElementById('myModal');
+const openModalBtn = document.getElementById('openModalBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const taskForm = document.getElementById('taskForm');
+
+
+openModalBtn.addEventListener('click', function () {
+    modal.style.display = 'block';
+});
+
+
+closeModalBtn.addEventListener('click', function () {
+    modal.style.display = 'none';
+});
+
+
+taskForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const taskText = document.getElementById('newTask').value.trim();
+    const taskAssignee = document.getElementById('taskAssignee').value.trim();
+    if (taskText === '') return;
+
+    const newTask = document.createElement('div');
+    newTask.className = 'card';
+    newTask.draggable = true;
+
+    const taskContent = document.createElement('div');
+    taskContent.className = 'task-content';
+
+    const taskParagraph = document.createElement('p');
+    taskParagraph.textContent = taskText;
+
+    const assigneeParagraph = document.createElement('p');
+    assigneeParagraph.textContent = 'Encargado ' + taskAssignee;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Eliminar';
+    deleteButton.className = 'delete-button';
+    deleteButton.addEventListener('click', () => {
+        newTask.remove();
+    });
+
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Editar';
+    editButton.className = 'edit-button';
+    editButton.addEventListener('click', () => {
+ 
+        editModal.style.display = 'block';
+    
+        saveEditButton.addEventListener('click', () => {
+            const editedText = document.getElementById('editedTask').value;
+            if (editedText.trim() !== '') {
+                taskParagraph.textContent = editedText;
+            }
+    
+            editModal.style.display = 'none';
+        });
+    
+      
+        document.getElementById('editedTask').value = taskText;
+
+    });
+
+    closeEditModalBtn.addEventListener('click', () => {
+        editModal.style.display = 'none';
+    });
+
+    taskContent.appendChild(taskParagraph);
+    taskContent.appendChild(assigneeParagraph);
+    taskContent.appendChild(deleteButton);
+    taskContent.appendChild(editButton);
+
+    newTask.appendChild(taskContent);
+
+    newTask.addEventListener('dragstart', dragStart);
+    newTask.addEventListener('dragend', dragEnd);
+    
+
+    const todoColumn = document.querySelector('.board .column:nth-child(2)');
+    todoColumn.appendChild(newTask);
+
+    document.getElementById('newTask').value = '';
+    document.getElementById('taskAssignee').value = '';
+    modal.style.display = 'none';
+});
