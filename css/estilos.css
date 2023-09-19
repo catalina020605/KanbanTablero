@@ -1,6 +1,6 @@
-/*body {
+body {
     font-family: Arial, sans-serif;
-}*/
+}
 
 .board {
     display: flex;
@@ -14,6 +14,8 @@
     margin: 10px;
     background-color: #f9f9f9;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .card {
@@ -23,8 +25,10 @@
     margin: 5px 0;
     border-radius: 5px;
     cursor: pointer;
-    word-wrap: break-word;
+    word-wrap: break-word; /* Romper palabras largas */
     text-align: justify;
+    white-space: normal; /* Permitir ajuste del texto al ancho de la tarjeta */
+    max-width: 100%; /* Limitar el ancho de la tarjeta al 100% de la columna */
 }
 
 .addColumn {
