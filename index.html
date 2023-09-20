@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero Kanban</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <h1>Tablero Kanban</h1>
+    <div class="board">
+        <div class="column">
+            <div class="column-actions">
+                <select onchange="performAction(this)">
+                    <option value="none">Acciones</option>
+                    <option value="clear">Limpiar</option>
+                    <option value="delete">Borrar</option>
+                </select>
+            </div>
+            <h2>Por hacer</h2>
+        </div>
+        <div class="column">
+            <div class="column-actions">
+                <select onchange="performAction(this)">
+                    <option value="none">Acciones</option>
+                    <option value="clear">Limpiar</option>
+                    <option value="delete">Borrar</option>
+                </select>
+            </div>
+            <h2>En progreso</h2>
+        </div>
+        <div class="column">
+            <div class="column-actions">
+                <select onchange="performAction(this)">
+                    <option value="none">Acciones</option>
+                    <option value="clear">Limpiar</option>
+                    <option value="delete">Borrar</option>
+                </select>
+            </div>
+            <h2>Completado</h2>
+        </div>
+        <div class="addColumn">
+            <input type="text" id="newColumn" placeholder="Nueva columna">
+            <button onclick="addColumn()">Agregar Columna</button>
+
+            <button id="openModalBtn">Abrir Modal</button>
+        </div>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <h2>Agregar Tarea</h2><br>
+            <div>
+                <form id="taskForm">
+                    <label for="newTask">Nueva Tarea</label>
+                    <input type="text" id="newTask" placeholder="Nueva tarea" required>
+                    <label for="taskAssignee">Encargado</label>
+                    <input type="text" id="taskAssignee" placeholder="Encargado">
+                    <button>Encargado De la Tarea</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEditModalBtn">&times;</span>
+            <h2>Editar Tarea</h2><br>
+            <div>
+                <label for="editedTask">Editar Tarea</label>
+                <input type="text" id="editedTask" placeholder="Editar tarea">
+                <button id="saveEditButton">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
