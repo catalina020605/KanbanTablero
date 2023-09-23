@@ -1,78 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablero Kanban</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
-<body>
-    <h1>Tablero Kanban</h1>
-    <div class="board">
-        <div class="column">
-            <div class="column-actions">
-                <select onchange="performAction(this)">
-                    <option value="none">Acciones</option>
-                    <option value="clear">Limpiar</option>
-                    <option value="delete">Borrar</option>
-                </select>
-            </div>
-            <h2>Por hacer</h2>
-        </div>
-        <div class="column">
-            <div class="column-actions">
-                <select onchange="performAction(this)">
-                    <option value="none">Acciones</option>
-                    <option value="clear">Limpiar</option>
-                    <option value="delete">Borrar</option>
-                </select>
-            </div>
-            <h2>En progreso</h2>
-        </div>
-        <div class="column">
-            <div class="column-actions">
-                <select onchange="performAction(this)">
-                    <option value="none">Acciones</option>
-                    <option value="clear">Limpiar</option>
-                    <option value="delete">Borrar</option>
-                </select>
-            </div>
-            <h2>Completado</h2>
-        </div>
-        <div class="addColumn">
-            <input type="text" id="newColumn" placeholder="Nueva columna">
-            <button onclick="addColumn()">Agregar Columna</button>
 
-            <button id="openModalBtn">Abrir Modal</button>
-        </div>
-    </div>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeModalBtn">&times;</span>
-            <h2>Agregar Tarea</h2><br>
-            <div>
-                <form id="taskForm">
-                    <label for="newTask">Nueva Tarea</label>
-                    <input type="text" id="newTask" placeholder="Nueva tarea" required>
-                    <label for="taskAssignee">Encargado</label>
-                    <input type="text" id="taskAssignee" placeholder="Encargado">
-                    <button>Encargado De la Tarea</button>
-                </form>
+<body>
+    <header>
+        <button data-text="Awesome" class="button">
+            <span class="actual-text">&nbsp;TableroKanban&nbsp;</span>
+            <span class="hover-text" aria-hidden="true">&nbsp;TableroKanban&nbsp;</span>
+        </button>
+    </header>
+
+    <section class="ContenedorTodo">
+        <div class="column" id="tamañoBarra" class="cardTarjeta">
+            <h2>Agrega Tareas!!</h2>
+            <button class="learn-more" id="openModalBtn">
+                <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                </span>
+                <span class="button-text">Agrega Tareas</span>
+            </button>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeModalBtn">&times;</span>
+
+                    <div class="containerForm">
+                        <form id="taskForm" class="formModal" action="">
+                            <p class="tituloForm">Tareas</p>
+
+                            <input type="text" id="newTask" placeholder="Nueva Tarea " class="botonForm tipoBoton"
+                                required>
+                            <input type="text" id="descripcion" placeholder="Descripcion:  "
+                                class=" botonForm tipoBoton" required>
+                            <input type="text" id="taskAssignee" placeholder="Encargado:  " class="botonForm tipoBoton">
+
+                            <button class="btn" type="submit">Agrega tu tarea!!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeEditModalBtn">&times;</span>
+                    <h2>Editar Tarea</h2><br>
+                    <div>
+                        <label for="editedTask"></label>
+                        <input type="text" id="editedTask" placeholder="Editar tarea" class="botonForm tipoBoton">
+                        <button id="saveEditButton" class="btn">Guardar Cambios</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeEditModalBtn">&times;</span>
-            <h2>Editar Tarea</h2><br>
-            <div>
-                <label for="editedTask">Editar Tarea</label>
-                <input type="text" id="editedTask" placeholder="Editar tarea">
-                <button id="saveEditButton">Guardar Cambios</button>
+
+
+        <div class="board">
+
+            <div class="column" class="cardTarjeta">
+                <h2>Pendiente</h2>
+                <div class="column-actions">
+                    <button class="botonesColumnas" onclick="performAction(this, 'clear')">Limpiar
+                        <img class="iconos" src="imagenes/escoba.png" alt="escoba">
+                    </button>
+
+                    <button class="botonesColumnas" onclick="performAction(this, 'delete')">Borrar
+                        <img class="iconos" src="imagenes/papelera-de-reciclaje.png" alt="papelera">
+                    </button>
+                </div>
+            </div>
+
+            <div class="column" class="cardTarjeta">
+                <h2>En Progreso</h2>
+                <div class="column-actions">
+                    <button class="botonesColumnas" onclick="performAction(this, 'clear')">Limpiar
+                        <img class="iconos" src="imagenes/escoba.png" alt="escoba">
+                    </button>
+
+                    <button class="botonesColumnas" onclick="performAction(this, 'delete')">Borrar
+                        <img class="iconos" src="imagenes/papelera-de-reciclaje.png" alt="papelera">
+                    </button>
+                </div>
+            </div>
+
+            <div class="column" class="cardTarjeta">
+                <h2>Finalizado</h2>
+                <div class="column-actions">
+                    <button class="botonesColumnas" onclick="performAction(this, 'clear')">Limpiar
+                        <img class="iconos" src="imagenes/escoba.png" alt="escoba">
+                    </button>
+
+                    <button class="botonesColumnas" onclick="performAction(this, 'delete')">Borrar
+                        <img class="iconos" src="imagenes/papelera-de-reciclaje.png" alt="papelera">
+                    </button>
+                </div>
+            </div>
+
+            <div class="addColumn">
+                <input type="text" name="search" id="newColumn" placeholder="Nueva columna..." class="input">
+
+                <button onclick="addColumn()" class="cssbuttons-io-button"> Agregala!!
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="currentColor"
+                                d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z">
+                            </path>
+                        </svg>
+                    </div>
+                </button>
             </div>
         </div>
-    </div>
-    
+    </section>
+
+
     <script src="js/main.js"></script>
+
 </body>
+
 </html>

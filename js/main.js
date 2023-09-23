@@ -41,10 +41,10 @@ function dragDrop() {
 }
 
 
-function performAction(select) {
-    const selectedOption = select.value;
-    const column = select.parentElement.parentElement;
-    switch (selectedOption) {
+//FUNCION DE LIMPIAR Y BORRAR
+function performAction(button, action) {
+    const column = button.parentElement.parentElement;
+    switch (action) {
         case 'clear':
             clearColumn(column);
             break;
@@ -53,32 +53,36 @@ function performAction(select) {
             break;
     }
 }
-
+function clearColumn(column) {
+    const tasks = column.querySelectorAll('.card');
+    tasks.forEach(task => {
+        task.remove();
+    });
+}
 function deleteColumn(column) {
     column.remove();
 }
 
-function clearColumn(column) {
-    const cards = column.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.remove();
-    });
-}
-
+//FUNCION DE AGREGAR COLUMNAS
 function addColumn() {
     const columnName = newColumnInput.value;
     if (columnName.trim() === '') return;
 
     const newColumn = document.createElement('div');
     newColumn.className = 'column';
-    newColumn.innerHTML = `<div class="column-actions">
-        <select onchange="performAction(this)">
-            <option value="none">Acciones</option>
-            <option value="clear">Limpiar</option>
-            <option value="delete">Borrar</option>
-        </select>
-    </div>
-    <h2>${columnName}</h2>`;
+    newColumn.innerHTML = ` 
+    <h2>${columnName}</h2> 
+
+    <div class="column-actions">
+                    <button class="botonesColumnas" onclick="performAction(this, 'clear')">Limpiar  
+                        <img class="iconos" src="imagenes/escoba.png" alt="escoba">
+                    </button>
+
+                    <button class="botonesColumnas" onclick="performAction(this, 'delete')">Borrar
+                        <img class="iconos" src="imagenes/papelera-de-reciclaje.png" alt="papelera">
+                    </button>
+                </div>
+    `;
     newColumn.addEventListener('dragover', dragOver);
     newColumn.addEventListener('dragenter', dragEnter);
     newColumn.addEventListener('dragleave', dragLeave);
@@ -89,26 +93,41 @@ function addColumn() {
     newColumnInput.value = '';
 }
 
+
+//CONATNTES MODAL
 const modal = document.getElementById('myModal');
 const openModalBtn = document.getElementById('openModalBtn');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const taskForm = document.getElementById('taskForm');
 
 
+//ABRIR Y CERRAR MODAL
 openModalBtn.addEventListener('click', function () {
     modal.style.display = 'block';
 });
-
 
 closeModalBtn.addEventListener('click', function () {
     modal.style.display = 'none';
 });
 
 
+const colorOptions = ['#eddded', '#daffe6', '#a9fffd', '#c8bced', '#e4c5c0'];
 taskForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const taskText = document.getElementById('newTask').value.trim();
     const taskAssignee = document.getElementById('taskAssignee').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const colorSelect = document.createElement('select'); // Elemento select para elegir color
+    colorSelect.className = 'color-select';
+
+    // Agrega opciones de color al elemento select
+    for (const color of colorOptions) {
+        const colorOption = document.createElement('option');
+        colorOption.value = color;
+        colorOption.style.backgroundColor = color;
+        colorSelect.appendChild(colorOption);
+    }
+
     if (taskText === '') return;
 
     const newTask = document.createElement('div');
@@ -119,10 +138,16 @@ taskForm.addEventListener('submit', function (e) {
     taskContent.className = 'task-content';
 
     const taskParagraph = document.createElement('p');
+    taskParagraph.className = 'tituloTarea';
     taskParagraph.textContent = taskText;
 
     const assigneeParagraph = document.createElement('p');
-    assigneeParagraph.textContent = 'Encargado ' + taskAssignee;
+    assigneeParagraph.className = 'nomEncargado';
+    assigneeParagraph.textContent = 'Encargado: ' + taskAssignee;
+
+    const descripcionParagraph = document.createElement('p');
+    descripcionParagraph.className = 'desTarea';
+    descripcionParagraph.textContent = descripcion;
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Eliminar';
@@ -131,23 +156,24 @@ taskForm.addEventListener('submit', function (e) {
         newTask.remove();
     });
 
+
     const editButton = document.createElement('button');
     editButton.textContent = 'Editar';
     editButton.className = 'edit-button';
     editButton.addEventListener('click', () => {
- 
+
         editModal.style.display = 'block';
-    
+
         saveEditButton.addEventListener('click', () => {
             const editedText = document.getElementById('editedTask').value;
             if (editedText.trim() !== '') {
                 taskParagraph.textContent = editedText;
             }
-    
+
             editModal.style.display = 'none';
-        });
-    
-      
+
+        }
+    );
         document.getElementById('editedTask').value = taskText;
 
     });
@@ -156,21 +182,28 @@ taskForm.addEventListener('submit', function (e) {
         editModal.style.display = 'none';
     });
 
+    // Agrega la funcionalidad para cambiar el color
+    colorSelect.addEventListener('change', () => {
+        newTask.style.backgroundColor = colorSelect.value;
+        taskContent.style.backgroundColor = colorSelect.value;
+    });
+
     taskContent.appendChild(taskParagraph);
+    taskContent.appendChild(descripcionParagraph);
     taskContent.appendChild(assigneeParagraph);
     taskContent.appendChild(deleteButton);
     taskContent.appendChild(editButton);
+    taskContent.appendChild(colorSelect); 
 
     newTask.appendChild(taskContent);
 
     newTask.addEventListener('dragstart', dragStart);
     newTask.addEventListener('dragend', dragEnd);
-    
-
-    const todoColumn = document.querySelector('.board .column:nth-child(2)');
+    const todoColumn = document.querySelector(' #tamañoBarra');
     todoColumn.appendChild(newTask);
 
     document.getElementById('newTask').value = '';
     document.getElementById('taskAssignee').value = '';
+    document.getElementById('descripcion').value = '';
     modal.style.display = 'none';
 });
